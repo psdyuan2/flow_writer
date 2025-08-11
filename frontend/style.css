@@ -1,0 +1,188 @@
+/* style.css */
+:root {
+    --bg-color: #282c34;
+    --panel-color: #21252b;
+    --text-color: #abb2bf;
+    --header-color: #ffffff;
+    --accent-color: #61afef;
+    --border-color: #3f444f;
+    --input-bg: #1e2228;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#app-container {
+    width: 95%;
+    max-width: 1200px;
+    height: 90vh;
+    background-color: var(--panel-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+/* --- Start View --- */
+#start-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+}
+#start-view h1 { color: var(--header-color); font-size: 3rem; }
+#start-view p { font-size: 1.2rem; margin-bottom: 2rem; }
+#idea-input {
+    width: 80%;
+    height: 100px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 1rem;
+    resize: none;
+}
+#start-button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    background-color: var(--accent-color);
+    color: var(--header-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+#start-button:hover { background-color: #529bdf; }
+
+/* --- Main View --- */
+#main-view {
+    display: flex;
+    height: 100%;
+}
+.hidden { display: none !important; }
+
+/* Left Panel */
+#outline-panel {
+    width: 300px;
+    background-color: var(--bg-color);
+    padding: 20px;
+    overflow-y: auto;
+    border-right: 1px solid var(--border-color);
+}
+#outline-panel h2, #outline-panel h3 {
+    color: var(--header-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+#outline-panel h3 { font-size: 1.1rem; margin-top: 25px; }
+#outline-panel ul { list-style: none; padding: 0; }
+.outline-item {
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.outline-item:hover { background-color: var(--panel-color); }
+.outline-item.active {
+    background-color: var(--accent-color);
+    color: var(--header-color);
+}
+.outline-item small {
+    display: block;
+    opacity: 0.7;
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+
+/* Right Panel */
+#editor-panel {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+#editor-welcome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #6b717d;
+}
+#editor-content-wrapper { height: 100%; display: flex; flex-direction: column; }
+#editor-title { color: var(--header-color); }
+#editor-content {
+    flex-grow: 1;
+    width: 100%;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    padding: 15px;
+    font-size: 1rem;
+    line-height: 1.6;
+    resize: none;
+    box-sizing: border-box; /* Important */
+}
+#editor-actions {
+    margin-top: 15px;
+    text-align: right;
+}
+#editor-actions button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+#save-button {
+    background-color: #3a86ff;
+    color: white;
+}
+#generate-chapter-button {
+    background-color: #4caf50;
+    color: white;
+}
+
+/* --- Loader --- */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid var(--accent-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+#loader p {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: var(--header-color);
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowWriter - 你的AI故事伙伴</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- 初始视图：当没有项目时显示 -->
+        <div id="start-view">
+            <h1>FlowWriter</h1>
+            <p>只需一个想法，开启你的故事宇宙。</p>
+            <textarea id="idea-input" placeholder="例如：一个厌倦了杀戮的古代刺客，穿越到现代成了一名外卖员..."></textarea>
+            <button id="start-button">开启创作 ✨</button>
+        </div>
+
+        <!-- 主创作视图：创建项目后显示 -->
+        <div id="main-view" class="hidden">
+            <aside id="outline-panel">
+                <h2 id="project-title">故事大纲</h2>
+                <section id="characters-section">
+                    <h3>人物设定</h3>
+                    <ul id="character-list"></ul>
+                </section>
+                <section id="synopsis-section">
+                    <h3>故事梗概</h3>
+                    <div id="synopsis-item" class="outline-item" data-type="synopsis">查看/编辑</div>
+                </section>
+                <section id="chapters-section">
+                    <h3>章节列表</h3>
+                    <ul id="chapter-list"></ul>
+                </section>
+            </aside>
+            <main id="editor-panel">
+                <div id="editor-welcome">
+                    <p>👈 请从左侧选择要编辑的内容。</p>
+                </div>
+                <div id="editor-content-wrapper" class="hidden">
+                    <h3 id="editor-title"></h3>
+                    <textarea id="editor-content"></textarea>
+                    <div id="editor-actions">
+                        <button id="save-button">保存修改</button>
+                        <button id="generate-chapter-button" class="hidden">生成本章内容</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- 加载动画 -->
+    <div id="loader" class="hidden">
+        <div class="spinner"></div>
+        <p>AI正在奋笔疾书中...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
