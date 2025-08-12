@@ -5,6 +5,8 @@
 
 echo "--- 正在启动 FlowWriter 后端服务 ---"
 
+
+
 # 步骤1: 检查.env文件是否存在
 if [ ! -f .env ]; then
     echo "错误: .env 文件未找到！"
@@ -31,7 +33,7 @@ fi
 # 步骤3: 激活虚拟环境
 # 注意：在脚本中激活虚拟环境通常只对脚本本身生效，
 # 但对于我们启动uvicorn来说已经足够。
-#source venv/bin/activate
+#source .venv/bin/activate
 #echo "Python虚拟环境已激活。"
 
 # 步骤4: 加载环境变量从.env文件
@@ -46,6 +48,6 @@ echo "使用的生成模型: $DEFAULT_GENERATION_MODEL"
 # --host 0.0.0.0 使服务可以被局域网内的其他设备访问（比如手机测试）
 # 如果只想本机访问，可以使用 127.0.0.1
 echo "正在启动Uvicorn服务器，访问 http://127.0.0.1:8000"
-uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn backend.main:app --host 0.0.0.0 --port 800 --reload
 
 echo "--- FlowWriter 服务已停止 ---"

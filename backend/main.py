@@ -7,9 +7,9 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
-from .models.story import StoryProject, Character, Chapter
+from flow_writer.backend.models.story import StoryProject, Character, Chapter
 # 引入新的业务逻辑服务
-from .services import story_generator
+from flow_writer.backend.services import story_generator
 
 app = FastAPI(title="FlowWriter API")
 
@@ -30,13 +30,13 @@ def save_project(project: StoryProject):
     # ...
     project_file = PROJECTS_DIR / f"{project.id}.json"
     with open(project_file, "w", encoding="utf-8") as f:
-        f.write(project.model_dump_json(indent=2, ensure_ascii=False))
+        f.write(project.model_dump_json(indent=2))
 
 
 class IdeaInput(BaseModel):
     idea: str
     # 添加一个可选参数，默认生成5章概述
-    num_chapters: Optional[int] = Field(5, gt=0, le=20)  # 限制范围，避免滥用
+    num_chapters: Optional[int] = Field(3, gt=0, le=20)  # 限制范围，避免滥用
 
 
 @app.post("/api/projects", response_model=StoryProject)
@@ -121,4 +121,8 @@ def generate_chapter(input_data: GenerateChapterInput):
     target_chapter.status = "completed"
     save_project(project)
     return project
+
+if __name__ == '__main__':
+    res = create_project(IdeaInput(idea="拾荒老人竟然是千亿集团的ceo？苏卡只是请老人吃了顿盒饭就成了继承人"))
+    print(res)
 

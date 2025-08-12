@@ -18,7 +18,7 @@ def generate_initial_structure(idea: str) -> dict:
     return json.loads(json_string)
 
 
-def generate_chapter_content(synopsis: str, characters: list[Character], chapter_outline: str) -> str:
+def generate_chapter_content(synopsis: str, characters, chapter_outline: str) -> str:
     """根据大纲、人物和章节概述，生成章节内容"""
     # 将人物列表转换为更易读的字符串格式
     characters_str = "\n".join([f"- {c.name} ({c.role}): {c.description}" for c in characters])
@@ -37,7 +37,7 @@ def generate_chapter_content(synopsis: str, characters: list[Character], chapter
     )
     return content
 
-def generate_chapter_outlines(synopsis: str, num_chapters: int = 5) -> list[dict]:
+def generate_chapter_outlines(synopsis: str, num_chapters: int = 5):
     """
     根据故事梗概，生成指定数量的章节概述。
     """
@@ -63,3 +63,6 @@ def generate_chapter_outlines(synopsis: str, num_chapters: int = 5) -> list[dict
         print(f"Failed to generate chapter outlines: {e}")
         # 如果AI调用失败，返回一个带错误信息的列表
         return [{"title": f"第 {i+1} 章", "outline": f"AI生成概述失败: {e}"} for i in range(num_chapters)]
+if __name__ == '__main__':
+    res = generate_chapter_outlines("快递小哥逆袭成集团CEO", 5)
+    print(res)
