@@ -7,16 +7,39 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
-from flow_writer.backend.models.story import StoryProject, Character, Chapter
-# 引入新的业务逻辑服务
-from flow_writer.backend.services import story_generator
+import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
+from backend.models.story import StoryProject, Character, Chapter
+# 引入新的业务逻辑服务
+from backend.services import story_generator
+from starlette.middleware.cors import CORSMiddleware
 app = FastAPI(title="FlowWriter API")
 
 # ... (CORS中间件和辅助函数保持不变) ...
 PROJECTS_DIR = Path("projects")
 PROJECTS_DIR.mkdir(exist_ok=True)
 
+# CROS限制处理
+origins = [
+    "http://localhost",
+    "http://localhost:8000",
+    "http://127.0.0.1",
+    "http://127.0.0.1:8000",
+    "null",
+]
+
+# 3. 将 CORSMiddleware 添加到你的应用中
+#    这段代码应该紧跟在 app = FastAPI() 之后
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],          # 允许访问的源
+    allow_credentials=True,         # 是否支持发送 Cookie
+    allow_methods=["*"],            # 允许所有的请求方法 (GET, POST, PUT, DELETE 等)
+    allow_headers=["*"],            # 允许所有的请求头
+)
 
 def get_project(project_id: str) -> StoryProject:
     # ...
@@ -44,13 +67,31 @@ def create_project(idea_input: IdeaInput):
     """
     第一步：用户输入想法，创建项目，并由AI自动生成人物、梗概和前N章的概述。
     """
-    project_id = str(uuid.uuid4())
+    # --- 在这里加入调试代码 ---
+    print("\n" + "=" * 50)
+    print("🕵️  正在检查 OpenAI 连接配置...")
 
+    # 检查 API Key 是否被加载
+    api_key = os.getenv("OPENAI_API_KEY")
+    print(
+        f"  - OPENAI_API_KEY: {'已加载，以 sk- 开头' if api_key and api_key.startswith('sk-') else '未加载或格式不正确！'}")
+
+    # 检查是否设置了自定义的 API 地址 (例如代理)
+    api_base = os.getenv("OPENAI_API_BASE")
+    print(f"  - OPENAI_API_BASE: {api_base if api_base else '未设置 (使用官方默认地址)'}")
+
+    # 检查系统网络代理设置
+    http_proxy = os.getenv("HTTP_PROXY")
+    https_proxy = os.getenv("HTTPS_PROXY")
+    print(f"  - HTTP_PROXY: {http_proxy if http_proxy else '未设置'}")
+    print(f"  - HTTPS_PROXY: {https_proxy if https_proxy else '未设置'}")
+    print("=" * 50 + "\n")
+    project_id = str(uuid.uuid4())
     # 1. 生成基础的人物和梗概
-    try:
-        structure = story_generator.generate_initial_structure(idea_input.idea)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"LLM service failed during initial generation: {e}")
+    # try:
+    structure = story_generator.generate_initial_structure(idea_input.idea)
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=f"LLM service failed during initial generation: {e}")
 
     synopsis = structure.get("synopsis", "")
     characters = [Character(**c) for c in structure.get("characters", [])]

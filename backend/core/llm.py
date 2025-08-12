@@ -97,3 +97,11 @@ class LLMService:
 
 # 创建一个全局的LLM服务实例，方便在其他模块中直接导入使用
 llm_service = LLMService(provider="openai")
+
+if __name__ == '__main__':
+    json_string = llm_service.generate(
+        prompt="你好",
+        system_prompt="You are a helpful assistant designed to output JSON.",
+        output_format='json_object'
+    )
+    print(json_string)

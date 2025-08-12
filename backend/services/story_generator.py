@@ -1,8 +1,8 @@
 # backend/services/story_generator.py
 import json
-from flow_writer.backend.core.llm import llm_service
-from flow_writer.backend.core import prompts
-from flow_writer.backend.models.story import Character
+from backend.core.llm import llm_service
+from backend.core import prompts
+from backend.models.story import Character
 
 
 def generate_initial_structure(idea: str) -> dict:
