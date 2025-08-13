@@ -48,6 +48,6 @@ echo "使用的生成模型: $DEFAULT_GENERATION_MODEL"
 # --host 0.0.0.0 使服务可以被局域网内的其他设备访问（比如手机测试）
 # 如果只想本机访问，可以使用 127.0.0.1
 echo "正在启动Uvicorn服务器，访问 http://127.0.0.1:8000"
-uvicorn backend.main:app --host 0.0.0.0 --port 800 --reload
+uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 
 echo "--- FlowWriter 服务已停止 ---"
