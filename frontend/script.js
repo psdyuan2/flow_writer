@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- 全局状态管理 ---
     const state = { projects: [], currentProjectId: null, isSidebarOpen: false, currentProjectData: null, currentlyEditing: { type: null, id: null } };
-    const API_BASE_URL = 'http://8.152.197.219/:8000';
+    const API_BASE_URL = 'http://8.152.197.219:8000';
     let loadingInterval = null;
 
     // --- DOM 元素获取 ---
