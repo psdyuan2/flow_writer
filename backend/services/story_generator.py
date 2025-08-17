@@ -18,12 +18,13 @@ def generate_initial_structure(idea: str) -> dict:
     return json.loads(json_string)
 
 
-def generate_chapter_content(synopsis: str, characters, chapter_outline: str) -> str:
+def generate_chapter_content(synopsis: str, characters, chapter_outline: str, writing_style: str) -> str:
     """根据大纲、人物和章节概述，生成章节内容"""
     # 将人物列表转换为更易读的字符串格式
     characters_str = "\n".join([f"- {c.name} ({c.role}): {c.description}" for c in characters])
 
     prompt = prompts.PROMPT_GENERATE_CHAPTER_CONTENT.format(
+        writing_style=writing_style,
         synopsis=synopsis,
         characters=characters_str,
         chapter_outline=chapter_outline

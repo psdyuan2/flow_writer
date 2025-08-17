@@ -8,40 +8,100 @@
 </head>
 <body>
 
-    <div id="app-container">
-        <!-- 初始视图：当没有项目时显示 -->
-        <div id="start-view">
-            <h1>FlowWriter</h1>
-            <p>只需一个想法，开启你的故事宇宙。</p>
-            <textarea id="idea-input" placeholder="例如：一个厌倦了杀戮的古代刺客，穿越到现代成了一名外卖员..."></textarea>
-            <button id="start-button">开启创作 ✨</button>
+    <!-- ======================== -->
+    <!-- 项目侧边栏 -->
+    <!-- ======================== -->
+    <aside id="projects-sidebar">
+        <div class="sidebar-header">
+            <h2>我的作品</h2>
         </div>
+        <ul id="projects-list">
+            <!-- 项目列表将由JS动态填充 -->
+        </ul>
+        <div class="sidebar-footer">
+            <button id="new-project-button">＋ 写本新的</button>
+        </div>
+    </aside>
 
-        <!-- 主创作视图：创建项目后显示 -->
-        <div id="main-view" class="hidden">
-            <aside id="outline-panel">
-                <h2 id="project-title">故事大纲</h2>
+    <!-- ======================== -->
+    <!-- 主应用容器 -->
+    <!-- ======================== -->
+    <div id="app-wrapper">
+        <!-- 顶部导航栏 -->
+        <header id="top-bar">
+            <button id="toggle-sidebar-button">
+                <!-- 汉堡包图标 SVG -->
+                <svg viewBox="0 0 100 80" width="25" height="25">
+                    <rect width="100" height="15" rx="8"></rect>
+                    <rect y="30" width="100" height="15" rx="8"></rect>
+                    <rect y="60" width="100" height="15" rx="8"></rect>
+                </svg>
+            </button>
+            <h1 id="current-project-title">FlowWriter</h1>
+        </header>
+
+        <!-- 主要工作区 -->
+        <div id="main-content">
+            <!-- 大纲面板 (当项目加载后显示) -->
+            <aside id="outline-panel" class="hidden">
                 <section id="characters-section">
-                    <h3>人物设定</h3>
+                    <div class="section-header">
+                        <h3>人物设定</h3>
+                        <button id="add-character-button" class="add-button">+</button>
+                    </div>
                     <ul id="character-list"></ul>
                 </section>
                 <section id="synopsis-section">
                     <h3>故事梗概</h3>
                     <div id="synopsis-item" class="outline-item" data-type="synopsis">查看/编辑</div>
                 </section>
+                <section id="style-section">
+                    <h3>写作风格</h3>
+                    <div id="style-item" class="outline-item" data-type="style">查看/编辑</div>
+                </section>
                 <section id="chapters-section">
                     <h3>章节列表</h3>
                     <ul id="chapter-list"></ul>
                 </section>
             </aside>
+
+            <!-- 编辑器面板 (根据选择显示不同内容) -->
             <main id="editor-panel">
-                <div id="editor-welcome">
-                    <p>👈 请从左侧选择要编辑的内容。</p>
+                <!-- 初始启动页 (默认显示) -->
+                <div id="start-view">
+                    <h1>FlowWriter</h1>
+                    <p>只需一个想法，开启你的故事宇宙。</p>
+                    <textarea id="start-idea-input" placeholder="例如：一个赛博朋克世界里的侦探，接到了调查一串神秘代码的委托..."></textarea>
+                    <button id="start-creation-button">开启创作 ✨</button>
                 </div>
-                <div id="editor-content-wrapper" class="hidden">
-                    <h3 id="editor-title"></h3>
-                    <textarea id="editor-content"></textarea>
-                    <div id="editor-actions">
+
+                <!-- 通用文本编辑器模板 -->
+                <div id="text-editor" class="editor-wrapper hidden">
+                    <h3 class="editor-title"></h3>
+                    <textarea class="editor-content"></textarea>
+                </div>
+
+                <!-- 简化后的人物编辑器模板 -->
+                <div id="character-editor" class="editor-wrapper hidden">
+                    <h3 class="editor-title"></h3>
+                    <div class="form-group">
+                        <label for="char-name">姓名:</label>
+                        <input type="text" id="char-name" class="char-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="char-role">角色:</label>
+                        <input type="text" id="char-role" class="char-input">
+                    </div>
+                    <div class="form-group form-group-stretch">
+                        <label for="char-description">简介:</label>
+                        <textarea id="char-description" class="editor-content"></textarea>
+                    </div>
+                </div>
+
+                <!-- 统一的操作栏 (修复布局) -->
+                <div id="editor-actions" class="hidden">
+                    <button id="delete-character-button" class="danger-button hidden">删除人物</button>
+                    <div class="main-actions">
                         <button id="save-button">保存修改</button>
                         <button id="generate-chapter-button" class="hidden">生成本章内容</button>
                     </div>
@@ -50,12 +110,29 @@
         </div>
     </div>
 
-    <!-- 加载动画 -->
-    <div id="loader" class="hidden">
-        <div class="spinner"></div>
-        <p>AI正在奋笔疾书中...</p>
+    <!-- ======================== -->
+    <!-- 新建项目弹窗 -->
+    <!-- ======================== -->
+    <div id="new-project-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2>开启一个新故事</h2>
+            <textarea id="idea-input" placeholder="例如：一个能听到植物“心声”的社恐程序员..."></textarea>
+            <div class="modal-actions">
+                <button id="create-project-button">开启创作 ✨</button>
+                <button id="cancel-create-button">取消</button>
+            </div>
+        </div>
     </div>
 
+    <!-- ======================== -->
+    <!-- 全局加载动画 -->
+    <!-- ======================== -->
+    <div id="loader" class="hidden">
+        <div class="spinner"></div>
+        <p id="loader-text">AI正在奋笔疾书中...</p>
+    </div>
+
+    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
