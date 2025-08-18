@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderProjectsList();
     }
 
-    async function createNewProject(idea) { if (!idea) return alert('请输入你的故事想法！'); const newProject = await apiCall('/api/projects', 'POST', { idea, num_chapters: 5 }); if (newProject) { state.projects.unshift({ id: newProject.id, initial_idea: newProject.initial_idea }); renderProjectsList(); await loadProject(newProject.id); } }
+    async function createNewProject(idea) { if (!idea) return alert('大胆写出你离谱的灵感，交给我来给你补充细节！'); const newProject = await apiCall('/api/projects', 'POST', { idea, num_chapters: 5 }); if (newProject) { state.projects.unshift({ id: newProject.id, initial_idea: newProject.initial_idea }); renderProjectsList(); await loadProject(newProject.id); } }
 
     // --- 事件处理函数 ---
     async function handleStartFromBlank() { await createNewProject(startIdeaInput.value.trim()); startIdeaInput.value = ''; }
